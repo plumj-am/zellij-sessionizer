@@ -1,5 +1,4 @@
 use nucleo_matcher::{
-   Config,
    Matcher,
    pattern::{
       CaseMatching,
@@ -19,17 +18,9 @@ use nucleo_matcher::{
 // Normalization::Smart).match_list(paths, &mut matcher); assert_eq!(matches,
 // vec![("foo/bar", 168), ("foobar", 140)]);
 
-pub fn fuzzy_filter(items: &[String], search_term: &str) -> Vec<String> {
-   if search_term.is_empty() {
-      let sorted = items
-         .iter()
-         .map(|item| item.to_string())
-         .collect::<Vec<_>>();
-      return sorted;
-   }
-   let mut matcher = Matcher::new(Config::DEFAULT.match_paths());
+pub fn fuzzy_filter(items: &[String], search_term: &str, matcher: &mut Matcher) -> Vec<String> {
    let mut matches = Pattern::parse(search_term, CaseMatching::Ignore, Normalization::Smart)
-      .match_list(items, &mut matcher);
+      .match_list(items, matcher);
    matches.sort_by(|a, b| a.1.cmp(&b.1));
    matches
       .into_iter()
@@ -52,7 +43,8 @@ mod tests {
       .map(|item| item.to_string())
       .collect();
       let search_term = "bio";
-      let result = fuzzy_filter(&items, search_term);
+      let mut matcher = Matcher::new(Config::DEFAULT.match_paths());
+      let result = fuzzy_filter(&items, search_term, &mut matcher);
       assert_eq!(result, vec!["/home/laperlej/Projects/bioblend"]);
    }
 }

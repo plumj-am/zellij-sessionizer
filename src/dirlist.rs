@@ -1,10 +1,14 @@
 use std::collections::HashSet;
 
+use nucleo_matcher::{
+   Config,
+   Matcher,
+};
 use zellij_tile::prelude::*;
 
 use super::filter;
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct DirList {
    unique: HashSet<String>,
    dirs:   Vec<String>,
@@ -12,6 +16,20 @@ pub struct DirList {
 
    search_term:   String,
    filtered_dirs: Vec<String>,
+   matcher:       Matcher,
+}
+
+impl Default for DirList {
+   fn default() -> Self {
+      Self {
+         unique:        HashSet::new(),
+         dirs:          Vec::new(),
+         cursor:        0,
+         search_term:   String::new(),
+         filtered_dirs: Vec::new(),
+         matcher:       Matcher::new(Config::DEFAULT.match_paths()),
+      }
+   }
 }
 
 impl DirList {
@@ -72,7 +90,12 @@ impl DirList {
    }
 
    pub fn filter(&mut self) {
-      self.filtered_dirs = filter::fuzzy_filter(&self.dirs, self.search_term.as_str());
+      if self.search_term.is_empty() {
+         self.filtered_dirs = self.dirs.clone();
+      } else {
+         self.filtered_dirs =
+            filter::fuzzy_filter(&self.dirs, &self.search_term, &mut self.matcher);
+      }
       self.cursor = self.filtered_dirs.len().saturating_sub(1);
    }
 
