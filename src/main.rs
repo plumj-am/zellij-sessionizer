@@ -66,9 +66,10 @@ impl State {
    }
 
    fn make_dirlist(&mut self, paths: &[(PathBuf, Option<FileMetadata>)]) -> Vec<String> {
+      let show_hidden = self.config.show_hidden.clone();
       paths
          .iter()
-         .filter(|(p, _)| p.is_dir() && !is_hidden(p))
+         .filter(|(p, _)| p.is_dir() && !is_hidden(p, &show_hidden))
          .map(|(p, _)| {
             if p.starts_with(ROOT) {
                self.change_root(p)
@@ -106,10 +107,12 @@ impl ZellijPlugin for State {
          let host_path = host.join(relative_path);
          scan_host_folder(&host_path);
       }
+      let show_hidden = &self.config.show_hidden;
       let individual_dirs: Vec<String> = self
          .config
          .individual_dirs
          .iter()
+         .filter(|p| !is_hidden(p, show_hidden))
          .map(|p| p.to_string_lossy().to_string())
          .collect();
       self.dirlist.update_dirs(individual_dirs);
@@ -218,12 +221,9 @@ impl ZellijPlugin for State {
    }
 }
 
-fn is_hidden(path: &Path) -> bool {
-   const WHITELIST: [&str; 1] = [".config"];
-
-   path
-      .file_name()
-      .and_then(|s| s.to_str())
-      .map(|s| s.starts_with('.') && !WHITELIST.contains(&s))
-      .unwrap_or(false)
+fn is_hidden(path: &Path, show_hidden: &[PathBuf]) -> bool {
+   let name = path.file_name().and_then(|s| s.to_str());
+   name.map_or(false, |s| {
+      s.starts_with('.') && !show_hidden.iter().any(|d| d == Path::new(s))
+   })
 }

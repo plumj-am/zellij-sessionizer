@@ -11,6 +11,7 @@ use super::ROOT;
 pub struct Config {
    pub root_dirs:       Vec<PathBuf>,
    pub individual_dirs: Vec<PathBuf>,
+   pub show_hidden:     Vec<PathBuf>,
    pub layout:          LayoutInfo,
 }
 
@@ -19,6 +20,7 @@ impl Default for Config {
       Self {
          root_dirs:       vec![PathBuf::from(ROOT)],
          individual_dirs: vec![],
+         show_hidden:     vec![PathBuf::from(".config")],
          layout:          LayoutInfo::BuiltIn("default".to_string()),
       }
    }
@@ -47,6 +49,10 @@ impl From<BTreeMap<String, String>> for Config {
          Some(individual_dirs) => parse_dirs(individual_dirs),
          _ => vec![],
       };
+      let show_hidden: Vec<PathBuf> = match config.get("show_hidden") {
+         Some(show_hidden) => parse_dirs(show_hidden),
+         _ => vec![PathBuf::from(".config")],
+      };
       let layout = match config.get("session_layout") {
          Some(layout) => parse_layout(layout),
          _ => LayoutInfo::BuiltIn("default".to_string()),
@@ -54,6 +60,7 @@ impl From<BTreeMap<String, String>> for Config {
       Self {
          root_dirs,
          individual_dirs,
+         show_hidden,
          layout,
       }
    }
