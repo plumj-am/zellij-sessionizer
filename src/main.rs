@@ -166,20 +166,14 @@ impl ZellijPlugin for State {
                   self.dirlist.handle_half_page_down(self.rows);
                },
 
-               KeyWithModifier {
-                  bare_key: BareKey::Enter,
-                  ..
-               } => {
+               k if matches_key(&k, BareKey::Enter, None) => {
                   if let Some(selected) = self.dirlist.get_selected() {
                      let _ = self.switch_session_with_cwd(Path::new(&selected));
                      close_self();
                   }
                },
 
-               KeyWithModifier {
-                  bare_key: BareKey::Backspace,
-                  ..
-               } => {
+               k if matches_key(&k, BareKey::Backspace, None) => {
                   self.textinput.handle_backspace();
                   self
                      .dirlist
