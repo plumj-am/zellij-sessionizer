@@ -117,6 +117,7 @@ All actions:
 - `Up`/`Down`, `Shift-Tab`/`Tab`, or `<C-p>`/`<C-n>`: Select previous/next
   directory.
 - `<C-u>`/`<C-d>`: Move selection half a page up/down.
+- `<C-w>`: Delete the previous word.
 - `Enter`: Create a session based on selected directory.
 - `Esc`/`<C-c>`: Close the picker.
 
