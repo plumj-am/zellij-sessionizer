@@ -1,8 +1,11 @@
 [package]
+categories  = [ "zellij", "plugins" ]
 description = "Zellij plugin to create sessions based on folder names"
-edition     = "2021"
+edition     = "2024"
+keywords    = [ "zellij", "sessionizer", "session" ]
 license     = "MIT"
 name        = "zellij-sessionizer"
+repository  = "https://github.com/plumj-am/zellij-sessionizer"
 version     = "0.5.2"
 
 [dependencies]
@@ -49,6 +52,7 @@ map_err_ignore                    = "allow"
 match_ref_pats                    = "allow"
 match_same_arms                   = "allow"
 min_ident_chars                   = "allow"
+missing_docs_in_private_items     = "allow"
 missing_inline_in_public_items    = "allow"
 mod_module_files                  = "allow"
 module_name_repetitions           = "allow"
