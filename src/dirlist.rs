@@ -77,11 +77,7 @@ impl DirList {
    }
 
    pub fn get_selected(&self) -> Option<String> {
-      if self.cursor < self.filtered_dirs.len() {
-         Some(self.filtered_dirs[self.cursor].clone())
-      } else {
-         None
-      }
+      (self.cursor < self.filtered_dirs.len()).then(|| self.filtered_dirs[self.cursor].clone())
    }
 
    pub fn set_search_term(&mut self, search_term: &str) {
@@ -120,12 +116,13 @@ impl DirList {
             let text = dir.clone();
             let text_len = text.len();
             let item = Text::new(text);
-            let item = match i == self.cursor {
-               true => item.color_range(0, 0..text_len).selected(),
-               false => item,
+            let item = if i == self.cursor {
+               item.color_range(0, 0..text_len).selected()
+            } else {
+               item
             };
             print_text(item);
             println!();
-         })
+         });
    }
 }

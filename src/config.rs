@@ -41,22 +41,25 @@ fn parse_dirs(dirs: &str) -> Vec<PathBuf> {
 
 impl From<BTreeMap<String, String>> for Config {
    fn from(config: BTreeMap<String, String>) -> Self {
-      let root_dirs: Vec<PathBuf> = match config.get("root_dirs") {
-         Some(root_dirs) => parse_dirs(root_dirs),
-         _ => vec![PathBuf::from(ROOT)],
-      };
-      let individual_dirs: Vec<PathBuf> = match config.get("individual_dirs") {
-         Some(individual_dirs) => parse_dirs(individual_dirs),
-         _ => vec![],
-      };
-      let show_hidden: Vec<PathBuf> = match config.get("show_hidden") {
-         Some(show_hidden) => parse_dirs(show_hidden),
-         _ => vec![PathBuf::from(".config")],
-      };
-      let layout = match config.get("session_layout") {
-         Some(layout) => parse_layout(layout),
-         _ => LayoutInfo::BuiltIn("default".to_string()),
-      };
+      let root_dirs: Vec<PathBuf> = config.get("root_dirs").map_or_else(
+         || vec![PathBuf::from(ROOT)],
+         |root_dirs| parse_dirs(root_dirs),
+      );
+
+      let individual_dirs: Vec<PathBuf> = config
+         .get("individual_dirs")
+         .map_or_else(Vec::new, |individual_dirs| parse_dirs(individual_dirs));
+
+      let show_hidden: Vec<PathBuf> = config.get("show_hidden").map_or_else(
+         || vec![PathBuf::from(".config")],
+         |show_hidden| parse_dirs(show_hidden),
+      );
+
+      let layout = config.get("session_layout").map_or_else(
+         || LayoutInfo::BuiltIn("default".to_owned()),
+         |layout| parse_layout(layout),
+      );
+
       Self {
          root_dirs,
          individual_dirs,

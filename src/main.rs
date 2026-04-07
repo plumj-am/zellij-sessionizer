@@ -110,9 +110,8 @@ impl ZellijPlugin for State {
       self.textinput.reset();
       let host = PathBuf::from(ROOT);
       for dir in &self.config.root_dirs {
-         let relative_path = match dir.strip_prefix(self.cwd.as_path()) {
-            Ok(p) => p,
-            Err(_) => continue,
+         let Ok(relative_path) = dir.strip_prefix(self.cwd.as_path()) else {
+            continue;
          };
          let host_path = host.join(relative_path);
          scan_host_folder(&host_path);
