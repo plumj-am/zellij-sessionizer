@@ -43,24 +43,34 @@ fn matches_key(
 register_plugin!(State);
 
 impl State {
-   fn change_root(&mut self, path: &Path) -> PathBuf {
-      self.cwd.join(path.strip_prefix(ROOT).unwrap())
+   fn change_root(&self, path: &Path) -> Option<PathBuf> {
+      path.strip_prefix(ROOT).ok().map(|p| self.cwd.join(p))
    }
 
    fn switch_session_with_cwd(&self, dir: &Path) -> Result<(), String> {
-      let session_name = dir.file_name().unwrap().to_str().unwrap();
-      let cwd = dir.to_path_buf();
+      let session_name = dir
+         .file_name()
+         .and_then(|n| n.to_str())
+         .ok_or_else(|| format!("invalid session path: {}", dir.display()))?;
       let host_layout_path = PathBuf::from(ROOT)
-         .join(dir.strip_prefix("/").unwrap())
+         .join(
+            dir.strip_prefix("/")
+               .map_err(|_| format!("expected absolute path: {}", dir.display()))?,
+         )
          .join("layout.kdl");
       let layout = if host_layout_path.exists() {
-         LayoutInfo::File(host_layout_path.to_str().unwrap().into())
+         LayoutInfo::File(
+            host_layout_path
+               .to_str()
+               .ok_or_else(|| format!("non-UTF-8 layout path: {}", host_layout_path.display()))?
+               .into(),
+         )
       } else {
          self.config.layout.clone()
       };
       // Switch session will panic if the session is the current session
       if session_name != self.current_session {
-         switch_session_with_layout(Some(session_name), layout, Some(cwd));
+         switch_session_with_layout(Some(session_name), layout, Some(dir.to_path_buf()));
       }
       Ok(())
    }
@@ -70,11 +80,11 @@ impl State {
       paths
          .iter()
          .filter(|(p, _)| p.is_dir() && !is_hidden(p, &show_hidden))
-         .map(|(p, _)| {
+         .filter_map(|(p, _)| {
             if p.starts_with(ROOT) {
                self.change_root(p)
             } else {
-               p.to_path_buf()
+               Some(p.to_path_buf())
             }
          })
          .map(|p| p.to_string_lossy().to_string())
