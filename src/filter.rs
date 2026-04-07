@@ -19,10 +19,10 @@ use nucleo_matcher::{
 // vec![("foo/bar", 168), ("foobar", 140)]);
 
 pub fn fuzzy_filter(items: &[String], search_term: &str, matcher: &mut Matcher) -> Vec<String> {
-   let mut matched = Pattern::parse(search_term, CaseMatching::Ignore, Normalization::Smart)
+   let mut results = Pattern::parse(search_term, CaseMatching::Ignore, Normalization::Smart)
       .match_list(items, matcher);
-   matched.sort_by_key(|a| a.1);
-   matched.into_iter().map(|(item, _)| item.clone()).collect()
+   results.sort_by_key(|a| a.1);
+   results.into_iter().map(|(item, _)| item.clone()).collect()
 }
 
 #[cfg(test)]
