@@ -185,16 +185,12 @@ impl ZellijPlugin for State {
 
                k if matches_key(&k, BareKey::Backspace, None) => {
                   self.textinput.handle_backspace();
-                  self
-                     .dirlist
-                     .set_search_term(self.textinput.get_text().as_str());
+                  self.dirlist.set_search_term(self.textinput.get_text());
                },
 
                k if matches_key(&k, BareKey::Char('w'), Some(&[KeyModifier::Ctrl])) => {
                   self.textinput.handle_delete_word();
-                  self
-                     .dirlist
-                     .set_search_term(self.textinput.get_text().as_str());
+                  self.dirlist.set_search_term(self.textinput.get_text());
                },
 
                KeyWithModifier {
@@ -202,9 +198,7 @@ impl ZellijPlugin for State {
                   ..
                } => {
                   self.textinput.handle_char(c);
-                  self
-                     .dirlist
-                     .set_search_term(self.textinput.get_text().as_str());
+                  self.dirlist.set_search_term(self.textinput.get_text());
                },
 
                _ => (),

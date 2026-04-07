@@ -4,7 +4,7 @@ type Color = usize;
 
 #[derive(Debug)]
 pub struct TextInput {
-   text: Vec<char>,
+   text: String,
 
    cursor_symbol: char,
    marker_symbol: char,
@@ -16,7 +16,7 @@ pub struct TextInput {
 impl Default for TextInput {
    fn default() -> Self {
       Self {
-         text: Vec::new(),
+         text: String::new(),
 
          marker_symbol: '>',
          cursor_symbol: '_',
@@ -32,8 +32,8 @@ impl TextInput {
       self.text.clear();
    }
 
-   pub fn get_text(&self) -> String {
-      self.text.iter().collect::<String>()
+   pub fn get_text(&self) -> &str {
+      &self.text
    }
 
    pub fn handle_backspace(&mut self) {
@@ -42,10 +42,10 @@ impl TextInput {
 
    pub fn handle_delete_word(&mut self) {
       let mut i = self.text.len();
-      while i > 0 && self.text[i - 1].is_whitespace() {
+      while i > 0 && self.text.as_bytes()[i - 1].is_ascii_whitespace() {
          i -= 1;
       }
-      while i > 0 && !self.text[i - 1].is_whitespace() {
+      while i > 0 && !self.text.as_bytes()[i - 1].is_ascii_whitespace() {
          i -= 1;
       }
       self.text.truncate(i);
@@ -59,11 +59,8 @@ impl TextInput {
    }
 
    pub fn render(&self, _rows: usize, _cols: usize) {
-      let search_term = self.text.iter().collect::<String>();
-      let search_bar_content = format!(
-         "{} {}{}",
-         self.marker_symbol, search_term, self.cursor_symbol
-      );
+      let search_bar_content =
+         format!("{} {}{}", self.marker_symbol, self.text, self.cursor_symbol);
       let search_bar_len = search_bar_content.len();
       let search_bar = Text::new(search_bar_content)
          .color_range(self.marker_color, 0..1)
