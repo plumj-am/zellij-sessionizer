@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use zellij_tile::prelude::*;
 
-use crate::filter;
+use super::filter;
 
 #[derive(Debug, Default)]
 pub struct DirList {

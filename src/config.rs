@@ -5,7 +5,7 @@ use std::{
 
 use zellij_tile::prelude::LayoutInfo;
 
-use crate::ROOT;
+use super::ROOT;
 
 #[derive(Debug)]
 pub struct Config {
