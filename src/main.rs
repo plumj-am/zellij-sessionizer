@@ -26,7 +26,6 @@ struct State {
    current_session: String,
 
    config: Config,
-   debug:  String,
    rows:   usize,
 }
 
@@ -215,10 +214,6 @@ impl ZellijPlugin for State {
       println!();
       self.textinput.render(rows, cols);
       println!();
-      if !self.debug.is_empty() {
-         println!();
-         println!("{}", self.debug);
-      }
    }
 }
 
