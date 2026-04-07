@@ -135,10 +135,11 @@ impl ZellijPlugin for State {
          Event::Key(key) => {
             should_render = true;
             match key {
-               KeyWithModifier {
-                  bare_key: BareKey::Esc,
-                  ..
-               } => close_self(),
+               k if matches_key(&k, BareKey::Esc, None)
+                  || matches_key(&k, BareKey::Char('c'), Some(&[KeyModifier::Ctrl])) =>
+               {
+                  close_self()
+               },
 
                k if matches_key(&k, BareKey::Up, None)
                   || matches_key(&k, BareKey::Tab, Some(&[KeyModifier::Shift]))
