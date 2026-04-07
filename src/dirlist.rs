@@ -85,7 +85,7 @@ impl DirList {
    }
 
    pub fn set_search_term(&mut self, search_term: &str) {
-      self.search_term = search_term.to_string();
+      search_term.clone_into(&mut self.search_term);
       self.filter();
    }
 
@@ -117,7 +117,7 @@ impl DirList {
          .skip(from)
          .take(rows)
          .for_each(|(i, dir)| {
-            let text = dir.to_string();
+            let text = dir.clone();
             let text_len = text.len();
             let item = Text::new(text);
             let item = match i == self.cursor {

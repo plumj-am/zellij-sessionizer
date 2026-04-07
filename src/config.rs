@@ -21,22 +21,22 @@ impl Default for Config {
          root_dirs:       vec![PathBuf::from(ROOT)],
          individual_dirs: vec![],
          show_hidden:     vec![PathBuf::from(".config")],
-         layout:          LayoutInfo::BuiltIn("default".to_string()),
+         layout:          LayoutInfo::BuiltIn("default".to_owned()),
       }
    }
 }
 
 fn parse_layout(layout: &str) -> LayoutInfo {
    // builtin: ":default" custom: "default"
-   if layout.starts_with(":") {
-      LayoutInfo::BuiltIn(layout.trim_start_matches(':').to_string())
+   if layout.starts_with(':') {
+      LayoutInfo::BuiltIn(layout.trim_start_matches(':').to_owned())
    } else {
-      LayoutInfo::File(layout.to_string())
+      LayoutInfo::File(layout.to_owned())
    }
 }
 
 fn parse_dirs(dirs: &str) -> Vec<PathBuf> {
-   return dirs.split(';').map(PathBuf::from).collect();
+   dirs.split(';').map(PathBuf::from).collect()
 }
 
 impl From<BTreeMap<String, String>> for Config {

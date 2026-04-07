@@ -84,7 +84,7 @@ impl State {
             if p.starts_with(ROOT) {
                self.change_root(p)
             } else {
-               Some(p.to_path_buf())
+               Some(p.clone())
             }
          })
          .map(|p| p.to_string_lossy().to_string())
