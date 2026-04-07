@@ -1,10 +1,79 @@
 [package]
-name = "zellij-sessionizer"
-version = "0.4.0"
-edition = "2021"
 description = "Zellij plugin to create sessions based on folder names"
-license = "MIT"
+edition     = "2021"
+license     = "MIT"
+name        = "zellij-sessionizer"
+version     = "0.4.0"
 
 [dependencies]
-zellij-tile = "0.41.1"
 nucleo-matcher = "0.3.1"
+zellij-tile    = "0.41.1"
+
+[lints.clippy]
+cargo       = { level = "warn", priority = -1 }
+complexity  = { level = "warn", priority = -1 }
+correctness = { level = "warn", priority = -1 }
+nursery     = { level = "warn", priority = -1 }
+pedantic    = { level = "warn", priority = -1 }
+perf        = { level = "warn", priority = -1 }
+restriction = { level = "warn", priority = -1 }
+style       = { level = "warn", priority = -1 }
+suspicious  = { level = "warn", priority = -1 }
+
+
+blanket_clippy_restriction_lints = "allow"
+
+arbitrary_source_item_ordering    = "allow"
+arithmetic_side_effects           = "allow"
+as_conversions                    = "allow"
+as_pointer_underscore             = "allow"
+as_underscore                     = "allow"
+cast_possible_truncation          = "allow"
+clone_on_ref_ptr                  = "allow"
+cognitive_complexity              = "allow"
+dbg_macro                         = "allow"
+decimal_literal_representation    = "allow"
+else_if_without_else              = "allow"
+error_impl_error                  = "allow"
+exhaustive_enums                  = "allow"
+exhaustive_structs                = "allow"
+field_scoped_visibility_modifiers = "allow"
+float_arithmetic                  = "allow"
+impl_trait_in_params              = "allow"
+implicit_return                   = "allow"
+indexing_slicing                  = "allow"
+integer_division                  = "allow"
+integer_division_remainder_used   = "allow" # Only relevant in cryptographic contexts.
+let_underscore_untyped            = "allow"
+map_err_ignore                    = "allow"
+match_ref_pats                    = "allow"
+match_same_arms                   = "allow"
+min_ident_chars                   = "allow"
+missing_inline_in_public_items    = "allow"
+mod_module_files                  = "allow"
+module_name_repetitions           = "allow"
+modulo_arithmetic                 = "allow"
+multiple_crate_versions           = "allow"
+non_ascii_literal                 = "allow"
+print_stderr                      = "allow"
+print_stdout                      = "allow"
+pub_use                           = "allow"
+question_mark_used                = "allow"
+ref_patterns                      = "allow"
+same_name_method                  = "allow"
+semicolon_outside_block           = "allow"
+separated_literal_suffix          = "allow"
+shadow_reuse                      = "allow"
+shadow_same                       = "allow"
+shadow_unrelated                  = "allow"
+single_call_fn                    = "allow"
+single_char_lifetime_names        = "allow"
+single_match_else                 = "allow"
+std_instead_of_alloc              = "allow"
+todo                              = "allow"
+too_many_lines                    = "allow"
+try_err                           = "allow"
+unimplemented                     = "allow"
+unwrap_used                       = "deny"
+use_debug                         = "allow"
+wildcard_enum_match_arm           = "allow"

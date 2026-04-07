@@ -11,7 +11,12 @@
   };
 
   outputs =
-    inputs@{ nixpkgs, fenix, flake-parts, ... }:
+    inputs@{
+      nixpkgs,
+      fenix,
+      flake-parts,
+      ...
+    }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -24,15 +29,16 @@
         { system, ... }:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-
-          toolchain = fenix.packages.${system}.combine [
-            fenix.packages.${system}.complete.toolchain
-            fenix.packages.${system}.targets.wasm32-wasip1.latest.rust-std
-          ];
         in
         {
           devShells.default = pkgs.mkShell {
-            packages = [ toolchain ];
+            packages = [
+              (fenix.packages.${system}.combine [
+                fenix.packages.${system}.complete.toolchain
+                fenix.packages.${system}.latest.rust-analyzer
+                fenix.packages.${system}.targets.wasm32-wasip1.latest.rust-std
+              ])
+            ];
           };
         };
     };
