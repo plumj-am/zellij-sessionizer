@@ -3,7 +3,7 @@ description = "Zellij plugin to create sessions based on folder names"
 edition     = "2021"
 license     = "MIT"
 name        = "zellij-sessionizer"
-version     = "0.5.1"
+version     = "0.5.2"
 
 [dependencies]
 nucleo-matcher = "0.3.1"
