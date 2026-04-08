@@ -59,6 +59,20 @@ plugins {
 }
 ```
 
+> [!TIP]
+> To skip the permissions prompt, you can add the following to
+> `$XDG_CACHE_HOME/zellij/permissions.kdl`:
+>
+> ```kdl
+> "https://github.com/plumj-am/zellij-sessionizer/releases/latest/download/zellij-sessionizer.wasm" {
+>     ReadApplicationState
+>     ChangeApplicationState
+>     RunCommands
+> }
+> ```
+>
+> Adjust based on your installation method, as needed.
+
 ## Configuration
 
 Add the plugin to a keybinding in your config.toml.
