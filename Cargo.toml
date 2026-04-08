@@ -3,7 +3,7 @@ description = "Zellij plugin to create sessions based on folder names"
 edition     = "2021"
 license     = "MIT"
 name        = "zellij-sessionizer"
-version     = "0.4.0"
+version     = "0.5.1"
 
 [dependencies]
 nucleo-matcher = "0.3.1"
@@ -43,7 +43,7 @@ impl_trait_in_params              = "allow"
 implicit_return                   = "allow"
 indexing_slicing                  = "allow"
 integer_division                  = "allow"
-integer_division_remainder_used   = "allow" # Only relevant in cryptographic contexts.
+integer_division_remainder_used   = "allow"
 let_underscore_untyped            = "allow"
 map_err_ignore                    = "allow"
 match_ref_pats                    = "allow"
